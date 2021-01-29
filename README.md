@@ -14,6 +14,8 @@ The error you get is:
 
 `An unhandled exception occurred: ENOENT: no such file or directory, unlink main.js.map`
 
+Note there is no mention why this file does not exist (the actual reason is that the TS compile has failed and it did not produce any .js or .map files).
+
 To fix: Navigate to `node_modules/@appsignal/webpack/dist/cjs/index.js` and on line 189 add a `.catch(() => {})` to the `.unlink()` call and save.
 
 Run `npm run build` again.
