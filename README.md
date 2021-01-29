@@ -1,27 +1,27 @@
-# AppsignalIssue465
+# AppSignal Issue 465
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
+A Reproduction of issue 465 in AppSignal Webpack
 
-## Development server
+## Steps for Reproduction
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. `npm install`
+2. ensure line 11 is uncommented in `app.component.ts`
+3. `npm run build`
 
-## Code scaffolding
+Issue:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The error you get is:
 
-## Build
+`An unhandled exception occurred: ENOENT: no such file or directory, unlink main.js.map`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+To fix: Navigate to `node_modules/@appsignal/webpack/dist/cjs/index.js` and on line 189 add a `.catch(() => {})` to the `.unlink()` call and save.
 
-## Running unit tests
+Run `npm run build` again.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+You will see the actual typescript error printed out as expected:
 
-## Running end-to-end tests
+```
+Error: src/app/app.component.ts:11:3 - error TS2322: Type 'string' is not assignable to type 'boolean'.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+11   brokenValue: boolean = 'string';
+```
